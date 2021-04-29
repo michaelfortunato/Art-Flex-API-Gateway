@@ -1,9 +1,10 @@
 const express = require('express');
 const { graphqlHTTP } = require('express-graphql');
 const { buildSchema } = require('graphql')
+const schema = require('./schema.js')
 
 // Defining graphql schema, using GraphQL schema language
-
+/*
 const schema = buildSchema(`
     type Query {
         artist(id: ID!) : Artist
@@ -33,6 +34,7 @@ const schema = buildSchema(`
         YEAR
     }
 `)
+*/
 const root = {
     artist: (id) => {
         return {
