@@ -31,10 +31,14 @@ const schema = buildSchema(`
         statusMessage: String
     }
     type SignInResponse {
+        status: String!
+        statusMessage: String
         user: User
         accessToken: String
         refreshToken: String
     }
+
+
     interface User {
         name: String
         email: String
@@ -70,23 +74,10 @@ const schema = buildSchema(`
 `);
 
 const rootResolver = {
-  artist: (args, context, info) => {
-    return name;
-  },
-  artists: (args, context, info) => {
-    if (page === null) {
-      page = -1;
-    }
-    return {
-      page: page,
-    };
-  },
-  buyer: (args, context, info) => {
-    return name;
-  },
-  buyers: (args, context, info) => {
-    return page;
-  },
+  artist: (args, context, info) => {},
+  artists: (args, context, info) => {},
+  buyer: (args, context, info) => {},
+  buyers: (args, context, info) => {},
   SignUpArtist: async (args, context, info) => {
     const { input } = args;
     const { name, email, password } = input;
@@ -99,6 +90,24 @@ const rootResolver = {
     const { name, email, password } = input;
     const buyer = new Buyer(name, email);
     return await buyer.signup(password);
+  },
+  SignInUser: async (args, context, info) => {
+    const { input } = args;
+    const { email, password } = input;
+    const { status, statusMessage, user, accessToken, refreshToken } =
+      await User.signin(email, password);
+   
+      context.res.cookie("jid", refreshToken, {
+      httpOnly: true,
+      domain: "artflex.co",
+      path: "/",
+    });
+    return {
+      status: status,
+      statusMessage: statusMessage,
+      user: user,
+      accessToken: accessToken,
+    };
   },
 };
 
