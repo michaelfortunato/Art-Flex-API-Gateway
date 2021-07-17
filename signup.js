@@ -32,26 +32,28 @@ const sendVerificationEmail = async (toEmail, verificationToken) => {
 };
 
 router.post("/new", async (req, res) => {
-  try {
-    const payload = {
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-    };
+  const payload = {
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+  };
 
+  try {
+    const authRes = await axios.post(
+      `http://${AUTH_HOST}:${AUTH_PORT}/signup/new`,
+      payload
+    );
+    res.status(200).send({ email: req.body.email });
     try {
-      const authRes = await axios.post(
-        `http://${AUTH_HOST}:${AUTH_PORT}/signup/new`,
-        payload
+      await sendVerificationEmail(
+        req.body.email,
+        authRes.data.verificationToken
       );
     } catch (error) {
-      res.status(error.response.status).send(error.response.data);
+      console.log(error);
     }
-    // Otherwise, we send the email
-    res.send(authRes.data);
-    await sendVerificationEmail(req.body.email, authRes.data.verificationToken);
   } catch (error) {
-    res.sendStatus(500);
+    res.status(error.response.status).send(error.response.data);
   }
 });
 router.post("/verify/:email/:token", async (req, res) => {
