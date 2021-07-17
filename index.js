@@ -1,9 +1,16 @@
 const express = require("express");
 const { graphqlHTTP } = require("express-graphql");
+const nodemailer = require("nodemailer");
+const json = require("./secret.json");
 const { buildSchema, SingleFieldSubscriptionsRule } = require("graphql");
 const Artist = require("./artist");
 const Buyer = require("./buyer");
 const User = require("./user");
+const signup = require("./signup");
+const signin = require("./signin");
+
+
+
 // Defining graphql schema, using GraphQL schema language
 const schema = buildSchema(`
     type Query {
@@ -78,6 +85,8 @@ const rootResolver = {
   artists: (args, context, info) => {},
   buyer: (args, context, info) => {},
   buyers: (args, context, info) => {},
+
+
   SignUpArtist: async (args, context, info) => {
     const { input } = args;
     const { name, email, password } = input;
@@ -91,6 +100,8 @@ const rootResolver = {
     const buyer = new Buyer(name, email);
     return await buyer.signup(password);
   },
+
+
   SignInUser: async (args, context, info) => {
     const { input } = args;
     const { email, password } = input;
@@ -113,17 +124,11 @@ const rootResolver = {
 
 // Our server
 const app = express();
-const port = 8081;
+const port = process.env.PORT || 8081;
 
-app.use(
-  "/graphql",
-  graphqlHTTP({
-    schema: schema,
-    rootValue: rootResolver,
-    graphiql: true,
-  })
-);
+app.use(express.json());
+app.use("/signup", signup);
 
 app.listen(port, () => {
-  console.log(`Server is listening at http://localhost:${port}/graphql`);
+  console.log(`Server is listening at ${port}`);
 });
