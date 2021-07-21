@@ -1,7 +1,6 @@
 const express = require("express");
 const { graphqlHTTP } = require("express-graphql");
 const nodemailer = require("nodemailer");
-const json = require("./secret.json");
 const { buildSchema, SingleFieldSubscriptionsRule } = require("graphql");
 const Artist = require("./artist");
 const Buyer = require("./buyer");
@@ -124,11 +123,14 @@ const rootResolver = {
 
 // Our server
 const app = express();
-const port = process.env.PORT || 8081;
+const port = process.env.PORT || 8080;
 
 app.use(express.json());
 app.use("/signup", signup);
-
+app.get("/", (req, res) => {
+  console.log("This was hit");
+  res.send("hello world")
+})
 app.listen(port, () => {
   console.log(`Server is listening at ${port}`);
 });

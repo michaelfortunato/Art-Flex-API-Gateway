@@ -1,7 +1,6 @@
 const express = require("express");
 const axios = require("axios");
 const nodemailer = require("nodemailer");
-const json = require("./secret.json");
 
 const router = express.Router();
 const AUTH_HOST = process.env.AUTH_APP_SERVICE_SERVICE_HOST || "localhost";
@@ -14,8 +13,8 @@ const transporter = nodemailer.createTransport({
   auth: {
     type: "OAuth2",
     user: "automated-services@art-flex.co",
-    serviceClient: json.client_id,
-    privateKey: json.private_key,
+    serviceClient: process.env.CLIENT_ID,
+    privateKey: process.env.PRIVATE_KEY,
   },
 });
 const sendVerificationEmail = async (toEmail, verificationToken) => {
