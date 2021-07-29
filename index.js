@@ -7,8 +7,7 @@ const Buyer = require("./buyer");
 const User = require("./user");
 const signup = require("./signup");
 const signin = require("./signin");
-
-
+const cors = require("cors");
 
 // Defining graphql schema, using GraphQL schema language
 const schema = buildSchema(`
@@ -85,7 +84,6 @@ const rootResolver = {
   buyer: (args, context, info) => {},
   buyers: (args, context, info) => {},
 
-
   SignUpArtist: async (args, context, info) => {
     const { input } = args;
     const { name, email, password } = input;
@@ -100,14 +98,13 @@ const rootResolver = {
     return await buyer.signup(password);
   },
 
-
   SignInUser: async (args, context, info) => {
     const { input } = args;
     const { email, password } = input;
     const { status, statusMessage, user, accessToken, refreshToken } =
       await User.signin(email, password);
-   
-      context.res.cookie("jid", refreshToken, {
+
+    context.res.cookie("jid", refreshToken, {
       httpOnly: true,
       domain: "artflex.co",
       path: "/",
@@ -125,12 +122,13 @@ const rootResolver = {
 const app = express();
 const port = process.env.PORT || 8080;
 
+app.use(cors({ origin: "*"}));
 app.use(express.json());
 app.use("/signup", signup);
 app.get("/", (req, res) => {
   console.log("This was hit");
-  res.send("hello world")
-})
+  res.send("hello world");
+});
 app.listen(port, () => {
   console.log(`Server is listening at ${port}`);
 });
