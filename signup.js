@@ -36,12 +36,14 @@ router.post("/new", async (req, res) => {
     email: req.body.email,
     password: req.body.password,
   };
-
   try {
+     console.log("there!")
     const authRes = await axios.post(
       `http://${AUTH_HOST}:${AUTH_PORT}/signup/new`,
       payload
     );
+    console.log("here!")
+    
     res.status(200).send({ email: req.body.email });
     try {
       await sendVerificationEmail(

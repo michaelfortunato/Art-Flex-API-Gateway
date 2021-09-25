@@ -125,10 +125,6 @@ const port = process.env.PORT || 8080;
 app.use(cors({ origin: "*"}));
 app.use(express.json());
 app.use("/signup", signup);
-app.get("/", (req, res) => {
-  console.log("This was hit");
-  res.send("hello world");
-});
 app.listen(port, () => {
   console.log(`Server is listening at ${port}`);
 });
