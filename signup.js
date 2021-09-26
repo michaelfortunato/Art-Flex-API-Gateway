@@ -14,8 +14,8 @@ const transporter = nodemailer.createTransport({
   auth: {
     type: "OAuth2",
     user: "automated-services@art-flex.co",
-    serviceClient: process.env.CLIENT_ID,
-    privateKey: process.env.PRIVATE_KEY
+    serviceClient: String(process.env.CLIENT_ID),
+    privateKey: String(process.env.PRIVATE_KEY)
   },
 });
 const sendVerificationEmail = async (toEmail, verificationToken) => {
