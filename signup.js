@@ -19,7 +19,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 const sendVerificationEmail = async (toEmail, verificationToken) => {
-  console.log(email)
+  console.log(toEmail)
   console.log(verificationToken)
   await transporter.verify();
   await transporter.sendMail({
