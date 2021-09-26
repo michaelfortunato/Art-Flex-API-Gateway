@@ -19,6 +19,8 @@ const transporter = nodemailer.createTransport({
   },
 });
 const sendVerificationEmail = async (toEmail, verificationToken) => {
+  console.log(email)
+  console.log(verificationToken)
   await transporter.verify();
   await transporter.sendMail({
     from: "automated-services@art-flex.co <automated-services@art-flex.co>",
@@ -49,6 +51,7 @@ router.post("/new", async (req, res) => {
         authRes.data.verificationToken
       );
     } catch (error) {
+      console.log("email error!!!!!")
       console.log(error);
     }
   } catch (error) {
