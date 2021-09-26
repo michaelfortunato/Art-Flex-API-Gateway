@@ -6,6 +6,7 @@ const router = express.Router();
 const AUTH_HOST = process.env.AUTH_APP_SERVICE_SERVICE_HOST || "localhost";
 const AUTH_PORT = process.env.AUTH_APP_SERVICE_SERVICE_PORT || 8080;
 
+console.log(process.env)
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
@@ -37,13 +38,10 @@ router.post("/new", async (req, res) => {
     password: req.body.password,
   };
   try {
-     console.log("there!")
     const authRes = await axios.post(
       `http://${AUTH_HOST}:${AUTH_PORT}/signup/new`,
       payload
     );
-    console.log("here!")
-    
     res.status(200).send({ email: req.body.email });
     try {
       await sendVerificationEmail(
@@ -54,6 +52,7 @@ router.post("/new", async (req, res) => {
       console.log(error);
     }
   } catch (error) {
+    console.log(error)
     res.status(error.response.status).send(error.response.data);
   }
 });
