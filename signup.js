@@ -28,7 +28,11 @@ const sendVerificationEmail = async (toEmail, verificationToken) => {
     console.log(process.env.PRIVATE_KEY)
     console.log(process.env.PRIVATE_KEY.replace(/\\n/g,'\n'))
   } else {
+  console.log(process.env.PRIVATE_KEY)
     console.log("clients are not equal") 
+    console.log(process.env.PRIVATE_KEY)
+    console.log("stop")
+    console.log(process.env.PRIVATE_KEY.replace(/\\n/g,'\n'))
   }
 
   await transporter.verify();
