@@ -10,20 +10,18 @@ console.log(process.env)
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
-  secure: false,
+  secure: true,
   auth: {
     type: "OAuth2",
     user: "automated-services@art-flex.co",
     serviceClient: process.env.CLIENT_ID,
     privateKey: process.env.PRIVATE_KEY
-  }
+  },
 });
-console.log(transporter)
-console.log(";lkejr;lekj;")
 const sendVerificationEmail = async (toEmail, verificationToken) => {
   await transporter.verify();
   await transporter.sendMail({
-    from: "no-reply@art-flex.co <no-reply@art-flex.co>",
+    from: "automated-services@art-flex.co <automated-services@art-flex.co>",
     to: toEmail,
     subject: "[Art Flex] Please verify your account",
     text:
