@@ -10,7 +10,7 @@ console.log(process.env)
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
-  secure: true,
+  secure: false,
   auth: {
     type: "OAuth2",
     user: "automated-services@art-flex.co",
