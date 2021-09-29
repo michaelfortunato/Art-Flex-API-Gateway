@@ -1,7 +1,7 @@
 const express = require("express");
 const axios = require("axios");
 const nodemailer = require("nodemailer");
-
+const emailHtml = require("./email_template.js");
 const router = express.Router();
 const AUTH_HOST = process.env.AUTH_APP_SERVICE_SERVICE_HOST || "localhost";
 const AUTH_PORT = process.env.AUTH_APP_SERVICE_SERVICE_PORT || 8080;
@@ -23,10 +23,7 @@ const sendVerificationEmail = async (toEmail, verificationToken) => {
     from: "no-reply@art-flex.co <no-reply@art-flex.co>",
     to: toEmail,
     subject: "[Art Flex] Please verify your account",
-    text:
-      "Click the link to confirm your account " +
-      "https://art-flex.co/signup/verify/" +
-      verificationToken,
+    html:emailHtml(toEmail, verificationToken)
   });
 };
 
