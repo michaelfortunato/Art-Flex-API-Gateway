@@ -8,7 +8,7 @@ const AUTH_PORT = process.env.AUTH_APP_SERVICE_SERVICE_PORT || 8081;
 let transporter = null;
 
 if (process.env.NODE_ENV !== "dev") {
-   transporter = nodemailer.createTransport({
+  transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 465,
     secure: true,
@@ -33,7 +33,7 @@ const sendVerificationEmail = async (toEmail, verificationToken) => {
 router.post("/new", async (req, res) => {
   const payload = {
     name: req.body.name,
-    email: req.body.email,
+    email: req.body.email.toLowerCase(),
     password: req.body.password,
   };
   try {
@@ -41,7 +41,10 @@ router.post("/new", async (req, res) => {
       `http://${AUTH_HOST}:${AUTH_PORT}/signup/new`,
       payload
     );
-    res.status(200).send({ email: req.body.email });
+    res.status(200).send({
+      name: req.body.name,
+      email: req.body.email
+    });
     if (process.env.NODE_ENV !== "dev") {
       try {
         await sendVerificationEmail(
@@ -54,17 +57,28 @@ router.post("/new", async (req, res) => {
       }
     } else {
       // console log the verifcation token for testing
-      console.log(authRes);
+      console.log(authRes.data);
     }
   } catch (error) {
-    console.log(error)
-    res.status(error.response.status).send(error.response.data);
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      res.status(error.response.status).send(error.response.data);
+    } else if (error.request) {
+      // The request was made but no response was received
+      // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+      // http.ClientRequest in node.js
+      res.status(500).send({statusMessage: "Internal server error"});
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      res.status(500).send({statusMessage: "Internal server error"});
+    }
   }
 });
 router.post("/verify/:email/:token", async (req, res) => {
   try {
     const payload = {
-      email: req.params.email,
+      email: req.params.email.toLowerCase(),
       token: req.params.token
     };
     const authRes = await axios.post(
@@ -73,7 +87,19 @@ router.post("/verify/:email/:token", async (req, res) => {
     );
     res.send(authRes.data);
   } catch (error) {
-    res.status(error.response.status).send(error.response.data);
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      res.status(error.response.status).send(error.response.data);
+    } else if (error.request) {
+      // The request was made but no response was received
+      // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+      // http.ClientRequest in node.js
+      res.status(500).send({statusMessage: "Internal server error"});
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      res.status(500).send({statusMessage: "Internal server error"});
+    }
   }
 });
 
