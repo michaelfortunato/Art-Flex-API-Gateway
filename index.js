@@ -8,6 +8,7 @@ const User = require("./user");
 const signup = require("./signup");
 const signin = require("./signin");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 // Defining graphql schema, using GraphQL schema language
 const schema = buildSchema(`
@@ -124,6 +125,7 @@ const port = process.env.PORT || 8080;
 
 app.use(cors({ origin: "*"}));
 app.use(express.json());
+app.use(cookieParser());
 app.use("/signup", signup);
 app.get("/test", async (req, res) => {
   console.log("ok")

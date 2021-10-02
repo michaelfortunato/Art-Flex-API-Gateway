@@ -68,10 +68,10 @@ router.post("/new", async (req, res) => {
       // The request was made but no response was received
       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
       // http.ClientRequest in node.js
-      res.status(500).send({statusMessage: "Internal server error"});
+      res.status(500).send({ statusMessage: "Internal server error" });
     } else {
       // Something happened in setting up the request that triggered an Error
-      res.status(500).send({statusMessage: "Internal server error"});
+      res.status(500).send({ statusMessage: "Internal server error" });
     }
   }
 });
@@ -85,7 +85,12 @@ router.post("/verify/:email/:token", async (req, res) => {
       `http://${AUTH_HOST}:${AUTH_PORT}/signup/verify`,
       payload
     );
-    res.send(authRes.data);
+    const { refreshToken } = authRes.data;
+    res.cookie('refreshToken', refreshToken, { httpOnly: true })
+    res.send({
+      name: authRes.data.name,
+      email: authRes.data.email
+    });
   } catch (error) {
     if (error.response) {
       // The request was made and the server responded with a status code
@@ -95,10 +100,10 @@ router.post("/verify/:email/:token", async (req, res) => {
       // The request was made but no response was received
       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
       // http.ClientRequest in node.js
-      res.status(500).send({statusMessage: "Internal server error"});
+      res.status(500).send({ statusMessage: "Internal server error" });
     } else {
       // Something happened in setting up the request that triggered an Error
-      res.status(500).send({statusMessage: "Internal server error"});
+      res.status(500).send({ statusMessage: "Internal server error" });
     }
   }
 });
