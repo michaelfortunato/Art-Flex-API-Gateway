@@ -5,9 +5,10 @@ const emailHtml = require("./email_template.js");
 const router = express.Router();
 const AUTH_HOST = process.env.AUTH_APP_SERVICE_SERVICE_HOST || "localhost";
 const AUTH_PORT = process.env.AUTH_APP_SERVICE_SERVICE_PORT || 8081;
+let transporter = null;
 
 if (process.env.NODE_ENV !== "dev") {
-  const transporter = nodemailer.createTransport({
+   transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 465,
     secure: true,
