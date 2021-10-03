@@ -132,7 +132,6 @@ app.use("/signup", signup);
 app.use("/login", login)
 app.use("/profile", checkCredentials, profile)
 app.get("/test", async (req, res) => {
-  console.log("ok")
   res.send("fine");
 });
 app.listen(port, () => {
