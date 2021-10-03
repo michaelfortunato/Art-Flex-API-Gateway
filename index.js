@@ -6,7 +6,9 @@ const Artist = require("./artist");
 const Buyer = require("./buyer");
 const User = require("./user");
 const signup = require("./signup");
-const signin = require("./signin");
+const login = require("./login");
+const profile = require("./profile");
+const checkCredentials = require("./check_credentials");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
@@ -80,10 +82,10 @@ const schema = buildSchema(`
 `);
 
 const rootResolver = {
-  artist: (args, context, info) => {},
-  artists: (args, context, info) => {},
-  buyer: (args, context, info) => {},
-  buyers: (args, context, info) => {},
+  artist: (args, context, info) => { },
+  artists: (args, context, info) => { },
+  buyer: (args, context, info) => { },
+  buyers: (args, context, info) => { },
 
   SignUpArtist: async (args, context, info) => {
     const { input } = args;
@@ -123,10 +125,12 @@ const rootResolver = {
 const app = express();
 const port = process.env.PORT || 8080;
 
-app.use(cors({ origin: "*"}));
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 app.use(cookieParser());
 app.use("/signup", signup);
+app.use("/login", login)
+app.use("/profile", checkCredentials, profile)
 app.get("/test", async (req, res) => {
   console.log("ok")
   res.send("fine");
