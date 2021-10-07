@@ -30,6 +30,7 @@ const checkCredentials = async (req, res, next) => {
             );
             // If sucessful set the new accessToken cookie 
             res.cookie("accessToken", authRes.data.accessToken, { httpOnly: true })
+            res.cookie("refreshToken", authRes.data.refreshToken, { httpOnly: true })
             next()
         }
     } catch (error) {
