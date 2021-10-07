@@ -13,29 +13,27 @@ fs.readdirSync(accessTokenPublicKeyDirectory).forEach(file => {
 });
 const checkCredentials = async (req, res, next) => {
     try {
-        let accessTokenIsValid = false;
-        if ("accessToken" in req.cookies) {
-            const { header } = jwt.decode(req.cookies.accessToken, { complete: true });
-            const kid = header.kid;
-            const accessTokenPublicKey = accessTokenPublicKeys[kid];
-            accessTokenIsValid = jwt.verify(req.cookies.accessToken, accessTokenPublicKey)
-        }
-        if (accessTokenIsValid) {
-            next()
-        } else {
+        const { header } = jwt.decode(req.cookies.accessToken, { complete: true });
+        const kid = header.kid;
+        const accessTokenPublicKey = accessTokenPublicKeys[kid];
+        jwt.verify(req.cookies.accessToken, accessTokenPublicKey)
+        next()
+    } catch (accessTokenError) {
+        try {
+            console.log("ok")
             // If the access token was invalid, try to get a new one
             const authRes = await axios.post(
-                `http://${AUTH_HOST}:${AUTH_PORT}/generate_access_token`,
+                `http://${AUTH_HOST}:${AUTH_PORT}/generate_token_pair`,
                 { refreshToken: req.cookies.refreshToken }
             );
             // If sucessful set the new accessToken cookie 
             res.cookie("accessToken", authRes.data.accessToken, { httpOnly: true })
             res.cookie("refreshToken", authRes.data.refreshToken, { httpOnly: true })
             next()
+        } catch (refreshTokenError) {
+            console.log(refreshTokenError)
+            res.status(401).send({ statusMessage: "Redirect to login." })
         }
-    } catch (error) {
-        console.log(error)
-        res.status(401).send({ statusMessage: "Redirect to login." })
     }
 }
 module.exports = checkCredentials
