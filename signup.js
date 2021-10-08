@@ -41,6 +41,7 @@ router.post("/new", async (req, res) => {
       `http://${AUTH_HOST}:${AUTH_PORT}/signup/new`,
       payload
     );
+    console.log(authRes)
     res.status(200).send({
       name: req.body.name,
       email: req.body.email
