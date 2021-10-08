@@ -201,7 +201,7 @@ const emailHtml = (email,token) => {
                             <w:anchorlock/>
                             <center style="color:#ffffff;font-family:sans-serif;font-size:15px;">Verify Email</center>
                           </v:roundrect><![endif]-->
-                            <a href="art-flex.com/verify-account/${email.replace(/@/g,"%40")}/${token}" style = "color:#ffffff" class="button button--blue">
+                            <a href="art-flex.co/verify-account/${email.replace(/@/g,"%40")}/${token}" style = "color:#ffffff" class="button button--blue">
                             Verify Email</a>
                           </div>
                         </td>
@@ -214,7 +214,7 @@ const emailHtml = (email,token) => {
                         <td>
                           <p class="sub">If you’re having trouble clicking the button, copy and paste the URL below into your web browser.
                           </p>
-                          <p class="sub"><a href="art-flex.com/verify-account/${email}/${token}">art-flex.com/verify-account/${email}/${token}</a></p>
+                          <p class="sub"><a href="art-flex.co/verify-account/${email}/${token}">art-flex.co/verify-account/${email}/${token}</a></p>
                         </td>
                       </tr>
                     </table>
