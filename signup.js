@@ -85,11 +85,12 @@ router.post("/verify", async (req, res) => {
         token: req.body.token
       }
     );
-    const { refreshToken } = authRes.data;
+    const { refreshToken, name, email, statusMessage } = authRes.data;
     res.cookie('refreshToken', refreshToken, { httpOnly: true })
     res.send({
-      name: authRes.data.name,
-      email: authRes.data.email
+      name,
+      email,
+      statusMessage
     });
   } catch (error) {
     if (error.response) {
