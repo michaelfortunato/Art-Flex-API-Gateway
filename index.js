@@ -9,7 +9,6 @@ const signup = require("./signup");
 const login = require("./login");
 const profile = require("./profile");
 const checkCredentials = require("./check_credentials");
-const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
 // Defining graphql schema, using GraphQL schema language
@@ -125,7 +124,6 @@ const rootResolver = {
 const app = express();
 const port = process.env.PORT || 8080;
 
-app.use(cors({ origin: "*" }));
 app.use(express.json());
 app.use(cookieParser());
 app.use("/signup", signup);
