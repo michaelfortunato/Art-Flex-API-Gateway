@@ -76,15 +76,14 @@ router.post("/new", async (req, res) => {
     }
   }
 });
-router.post("/verify/:email/:token", async (req, res) => {
+router.post("/verify", async (req, res) => {
   try {
-    const payload = {
-      email: req.params.email.toLowerCase(),
-      token: req.params.token
-    };
     const authRes = await axios.post(
       `http://${AUTH_HOST}:${AUTH_PORT}/signup/verify`,
-      payload
+      {
+        email: req.body.email.toLowerCase(),
+        token: req.body.token
+      }
     );
     const { refreshToken } = authRes.data;
     res.cookie('refreshToken', refreshToken, { httpOnly: true })
