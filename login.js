@@ -9,7 +9,7 @@ router.post("/", async (req, res) => {
         const authRes = await axios.post(
             `http://${AUTH_HOST}:${AUTH_PORT}/login`,
             {
-                email: req.body.email,
+                email: req.body.email.toLowerCase(),
                 password: req.body.password
             }
         )
