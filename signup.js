@@ -86,7 +86,7 @@ router.post("/verify", async (req, res) => {
       }
     );
     const { refreshToken, name, email, statusMessage } = authRes.data;
-    res.cookie('refreshToken', refreshToken, { httpOnly: true, sameSite:'none', secure:'true'})
+    res.cookie('refreshToken', refreshToken, { httpOnly: true })
     res.send({
       name,
       email,
