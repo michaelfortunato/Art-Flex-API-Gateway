@@ -8,6 +8,7 @@ const User = require("./user");
 const signup = require("./signup");
 const login = require("./login");
 const profile = require("./profile");
+const refresh_session = require("./refresh_session");
 const checkCredentials = require("./check_credentials");
 const cookieParser = require("cookie-parser");
 
@@ -81,10 +82,10 @@ const schema = buildSchema(`
 `);
 
 const rootResolver = {
-  artist: (args, context, info) => { },
-  artists: (args, context, info) => { },
-  buyer: (args, context, info) => { },
-  buyers: (args, context, info) => { },
+  artist: (args, context, info) => {},
+  artists: (args, context, info) => {},
+  buyer: (args, context, info) => {},
+  buyers: (args, context, info) => {},
 
   SignUpArtist: async (args, context, info) => {
     const { input } = args;
@@ -127,8 +128,9 @@ const port = process.env.PORT || 8080;
 app.use(express.json());
 app.use(cookieParser());
 app.use("/signup", signup);
-app.use("/login", login)
-app.use("/profile", checkCredentials, profile)
+app.use("/login", login);
+app.use("/profile", checkCredentials, profile);
+app.use("/refresh_session", refresh_session);
 app.get("/test", async (req, res) => {
   res.send("fine");
 });
