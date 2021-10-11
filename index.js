@@ -7,6 +7,7 @@ const Buyer = require("./buyer");
 const User = require("./user");
 const signup = require("./signup");
 const login = require("./login");
+const logout = require("./logout");
 const profile = require("./profile");
 const refresh_session = require("./refresh_session");
 const checkCredentials = require("./check_credentials");
@@ -129,6 +130,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use("/signup", signup);
 app.use("/login", login);
+app.use("/logout", checkCredentials, logout);
 app.use("/profile", checkCredentials, profile);
 app.use("/refresh_session", refresh_session);
 app.get("/test", async (req, res) => {
