@@ -91,7 +91,6 @@ router.post("/verify", async (req, res) => {
       }
     );
     // Add to the accountDB
-    await axios.post(`http://${ACCOUNT_HOST}:${ACCOUNT_PORT}/create_account`);
     const { refreshToken, name, email, statusMessage } = authRes.data;
     res.cookie("refreshToken", refreshToken, { httpOnly: true });
     res.send({
