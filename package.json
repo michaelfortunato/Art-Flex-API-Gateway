@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "API webserver for AR",
   "main": "index.js",
+  "scripts": {
+    "dev": "NODE_ENV=development nodemon -r dotenv/config index.js",
+    "start": "NODE_ENV=production node index.js"
+  },
   "dependencies": {
     "axios": "^0.21.1",
     "cookie-parser": "^1.4.5",
@@ -25,5 +29,8 @@
   "bugs": {
     "url": "https://github.com/michaelfortunato/AR-Server/issues"
   },
-  "homepage": "https://github.com/michaelfortunato/AR-Server#readme"
+  "homepage": "https://github.com/michaelfortunato/AR-Server#readme",
+  "devDependencies": {
+    "dotenv": "^10.0.0"
+  }
 }

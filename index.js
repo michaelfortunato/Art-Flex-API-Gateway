@@ -8,7 +8,7 @@ const User = require("./user");
 const signup = require("./signup");
 const login = require("./login");
 const logout = require("./logout");
-const profile = require("./profile");
+const account = require("./account");
 const refresh_session = require("./refresh_session");
 const checkCredentials = require("./check_credentials");
 const cookieParser = require("cookie-parser");
@@ -131,7 +131,7 @@ app.use(cookieParser());
 app.use("/signup", signup);
 app.use("/login", login);
 app.use("/logout", checkCredentials, logout);
-app.use("/profile", checkCredentials, profile);
+app.use("/account", checkCredentials, account);
 app.use("/refresh_session", refresh_session);
 app.get("/test", async (req, res) => {
   res.send("fine");

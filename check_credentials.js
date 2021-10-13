@@ -5,7 +5,7 @@ const axios = require("axios");
 const AUTH_HOST = process.env.AUTH_APP_SERVICE_SERVICE_HOST || "localhost";
 const AUTH_PORT = process.env.AUTH_APP_SERVICE_SERVICE_PORT || 8081;
 const accessTokenPublicKeyDirectory =
-  process.env.NODE_ENV !== "dev"
+  process.env.NODE_ENV !== "development"
     ? "/etc/secret-volume/jwts/access-tokens"
     : process.cwd() + "/secrets";
 let accessTokenPublicKeys = [];

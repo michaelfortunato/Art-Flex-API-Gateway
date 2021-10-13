@@ -5,9 +5,14 @@ const emailHtml = require("./email_template.js");
 const router = express.Router();
 const AUTH_HOST = process.env.AUTH_APP_SERVICE_SERVICE_HOST || "localhost";
 const AUTH_PORT = process.env.AUTH_APP_SERVICE_SERVICE_PORT || 8081;
+
+const ACCOUNT_HOST =
+  process.env.ACCOUNT_APP_SERVICE_SERVICE_HOST || "localhost";
+const ACCOUNT_PORT = process.env.ACCOUNT_APP_SERVICE_SERVICE_PORT || 8082;
+
 let transporter = null;
 
-if (process.env.NODE_ENV !== "dev") {
+if (process.env.NODE_ENV !== "development") {
   transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 465,
@@ -16,7 +21,7 @@ if (process.env.NODE_ENV !== "dev") {
       type: "OAuth2",
       user: "automated-services@art-flex.co",
       privateKey: process.env.PRIVATE_KEY.replace(/\\n/g, "\n"),
-      serviceClient: process.env.CLIENT_ID
+      serviceClient: process.env.CLIENT_ID,
     },
   });
 }
@@ -26,7 +31,7 @@ const sendVerificationEmail = async (toEmail, verificationToken) => {
     from: "no-reply@art-flex.co <no-reply@art-flex.co>",
     to: toEmail,
     subject: "[Art Flex] Please verify your account",
-    html: emailHtml(toEmail, verificationToken)
+    html: emailHtml(toEmail, verificationToken),
   });
 };
 
@@ -41,19 +46,19 @@ router.post("/new", async (req, res) => {
       `http://${AUTH_HOST}:${AUTH_PORT}/signup/new`,
       payload
     );
-    console.log(authRes)
+    console.log(authRes);
     res.status(200).send({
       name: req.body.name,
-      email: req.body.email
+      email: req.body.email,
     });
-    if (process.env.NODE_ENV !== "dev") {
+    if (process.env.NODE_ENV !== "development") {
       try {
         await sendVerificationEmail(
           req.body.email,
           authRes.data.verificationToken
         );
       } catch (error) {
-        console.log("email error!!!!!")
+        console.log("email error!!!!!");
         console.log(error);
       }
     } else {
@@ -82,15 +87,17 @@ router.post("/verify", async (req, res) => {
       `http://${AUTH_HOST}:${AUTH_PORT}/signup/verify`,
       {
         email: req.body.email.toLowerCase(),
-        token: req.body.token
+        token: req.body.token,
       }
     );
+    // Add to the accountDB
+    await axios.post(`http://${ACCOUNT_HOST}:${ACCOUNT_PORT}/create_account`);
     const { refreshToken, name, email, statusMessage } = authRes.data;
-    res.cookie('refreshToken', refreshToken, { httpOnly: true })
+    res.cookie("refreshToken", refreshToken, { httpOnly: true });
     res.send({
       name,
       email,
-      statusMessage
+      statusMessage,
     });
   } catch (error) {
     if (error.response) {
