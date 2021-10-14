@@ -22,6 +22,7 @@ const checkCredentials = async (req, res, next) => {
     const kid = header.kid;
     const accessTokenPublicKey = accessTokenPublicKeys[kid];
     jwt.verify(req.cookies.accessToken, accessTokenPublicKey);
+    res.locals.accessToken = authRes.data.accessToken
     next();
   } catch (accessTokenError) {
     try {
@@ -34,6 +35,7 @@ const checkCredentials = async (req, res, next) => {
       res.cookie("accessToken", authRes.data.accessToken, { httpOnly: true });
       res.cookie("refreshToken", authRes.data.refreshToken, { httpOnly: true });
       // Also set the local store as logout will need the refreshToken
+      res.locals.accessToken = authRes.data.accessToken
       res.locals.refreshToken = authRes.data.refreshToken
       next();
     } catch (refreshTokenError) {

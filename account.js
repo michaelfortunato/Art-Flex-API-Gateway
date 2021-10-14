@@ -9,10 +9,12 @@ router.get("/", async (req, res) => {
   res.send("Good");
 });
 
-router.get("/studio", async (req, res) => {
+router.post("/studio/upload", async (req, res) => {
   try {
     const accountRes = await axios.get(
-      `http://${ACCOUNT_HOST}:${ACCOUNT_PORT}/studio`
+      `http://${ACCOUNT_HOST}:${ACCOUNT_PORT}/studio/upload`, {
+        ...req.body
+      }
     );
     res.status(200).send(accountRes.data)
   } catch (error) {
