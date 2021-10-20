@@ -140,7 +140,7 @@ app.use(cookieParser());
 app.use("/signup", signup);
 app.use("/login", login);
 app.use("/logout", checkCredentials, logout);
-app.use("/account", account);
+app.use("/account", checkCredentials, account);
 app.use("/refresh_session", refresh_session);
 app.get("/test", async (req, res) => {
   res.send("fine");
