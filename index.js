@@ -12,7 +12,7 @@ const account = require("./account");
 const refresh_session = require("./refresh_session");
 const checkCredentials = require("./check_credentials");
 const cookieParser = require("cookie-parser");
-
+const { S3Client } = require("@aws-sdk/client-s3");
 // Defining graphql schema, using GraphQL schema language
 const schema = buildSchema(`
     type Query {
@@ -126,12 +126,21 @@ const rootResolver = {
 const app = express();
 const port = process.env.PORT || 8080;
 
+// Configure the S3 Client
+app.locals.s3_client = new S3Client({
+  region:"us-east-1",
+  credentials: {
+    accessKeyId: process.env.S3_ACCESS_KEY_ID,
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+  },
+});
+
 app.use(express.json());
 app.use(cookieParser());
 app.use("/signup", signup);
 app.use("/login", login);
 app.use("/logout", checkCredentials, logout);
-app.use("/account", checkCredentials, account);
+app.use("/account", account);
 app.use("/refresh_session", refresh_session);
 app.get("/test", async (req, res) => {
   res.send("fine");

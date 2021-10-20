@@ -8,6 +8,8 @@
     "start": "NODE_ENV=production node index.js"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.37.0",
+    "@aws-sdk/s3-request-presigner": "^3.37.0",
     "axios": "^0.21.1",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
