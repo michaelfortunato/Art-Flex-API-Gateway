@@ -18,3 +18,4 @@ if ["$CURRENT_BRANCH" == "main" ] && [ $(git diff --cached | grep $consoleregexp
 else
   echo "good"
 fi
+sdf
