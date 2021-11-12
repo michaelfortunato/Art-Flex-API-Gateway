@@ -93,7 +93,6 @@ const checkCredentials = async (
 			// that falls out of the range of 2xx
 			res.status(401).send({ statusMessage: "User not logged in" });
 		} else {
-			// console.log(error);
 			res.sendStatus(500);
 		}
 	}
