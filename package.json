@@ -4,13 +4,15 @@
 	"description": "API webserver for AR",
 	"main": "index.js",
 	"scripts": {
-		"dev": "NODE_ENV=development nodemon --config nodemon.json -r dotenv/config index.js",
+		"dev": "NODE_ENV=development ts-node-dev --respawn -- src/index.js",
 		"build": "tsc",
-		"start": "NODE_ENV=production npm run build && node ./dist/index.js"
+		"start": "NODE_ENV=production npm run build && node ./dist/index.js",
+		"commit": "commit-wizard"
 	},
 	"dependencies": {
 		"@aws-sdk/client-s3": "^3.37.0",
 		"@aws-sdk/s3-request-presigner": "^3.37.0",
+		"@types/express": "^4.17.13",
 		"axios": "^0.21.1",
 		"cookie-parser": "^1.4.5",
 		"cors": "^2.8.5",
@@ -34,7 +36,9 @@
 	},
 	"homepage": "https://github.com/michaelfortunato/AR-Server#readme",
 	"devDependencies": {
+		"@microsoft/tsdoc": "^0.13.2",
 		"@tsconfig/recommended": "^1.0.1",
+		"@types/jsonwebtoken": "^8.5.5",
 		"@types/node": "^16.11.7",
 		"@typescript-eslint/eslint-plugin": "^5.3.1",
 		"@typescript-eslint/parser": "^5.3.1",
@@ -42,10 +46,16 @@
 		"eslint": "^8.2.0",
 		"eslint-config-airbnb-base": "^15.0.0",
 		"eslint-config-prettier": "^8.3.0",
+		"eslint-import-resolver-node": "^0.3.6",
 		"eslint-plugin-import": "^2.25.2",
 		"eslint-plugin-prettier": "^4.0.0",
+		"jsdoc": "^3.6.7",
 		"nodemon": "^2.0.15",
 		"prettier": "^2.4.1",
-		"ts-node": "^10.4.0"
+		"ts-node": "^10.4.0",
+		"ts-node-dev": "^1.1.8"
+	},
+	"release": {
+		"analyzeCommits": "simple-commit-message"
 	}
 }

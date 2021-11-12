@@ -9,5 +9,5 @@
 		"NODE_ENV": "development"
 	},
 	"ext": "js,json,ts",
-	"exec": "tsc && ts-node ./src/index.js"
+	"exec": "npm run build && ts-node ./src/index.js"
 }

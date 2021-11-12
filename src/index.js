@@ -8,6 +8,7 @@ const User = require("./user");
 const signup = require("./signup");
 const login = require("./login");
 const logout = require("./logout");
+const isLoggedIn = require("./isLoggedIn");
 const account = require("./account");
 const refresh_session = require("./refresh_session");
 const checkCredentials = require("./check_credentials");
@@ -83,43 +84,43 @@ const schema = buildSchema(`
 `);
 
 const rootResolver = {
-  artist: (args, context, info) => {},
-  artists: (args, context, info) => {},
-  buyer: (args, context, info) => {},
-  buyers: (args, context, info) => {},
+	artist: (args, context, info) => {},
+	artists: (args, context, info) => {},
+	buyer: (args, context, info) => {},
+	buyers: (args, context, info) => {},
 
-  SignUpArtist: async (args, context, info) => {
-    const { input } = args;
-    const { name, email, password } = input;
-    const artist = new Artist(name, email);
-    console.log("OK");
-    return await artist.signup(password);
-  },
-  SignUpBuyer: async (args, context, info) => {
-    const { input } = args;
-    const { name, email, password } = input;
-    const buyer = new Buyer(name, email);
-    return await buyer.signup(password);
-  },
+	SignUpArtist: async (args, context, info) => {
+		const { input } = args;
+		const { name, email, password } = input;
+		const artist = new Artist(name, email);
+		console.log("OK");
+		return await artist.signup(password);
+	},
+	SignUpBuyer: async (args, context, info) => {
+		const { input } = args;
+		const { name, email, password } = input;
+		const buyer = new Buyer(name, email);
+		return await buyer.signup(password);
+	},
 
-  SignInUser: async (args, context, info) => {
-    const { input } = args;
-    const { email, password } = input;
-    const { status, statusMessage, user, accessToken, refreshToken } =
-      await User.signin(email, password);
+	SignInUser: async (args, context, info) => {
+		const { input } = args;
+		const { email, password } = input;
+		const { status, statusMessage, user, accessToken, refreshToken } =
+			await User.signin(email, password);
 
-    context.res.cookie("jid", refreshToken, {
-      httpOnly: true,
-      domain: "artflex.co",
-      path: "/",
-    });
-    return {
-      status: status,
-      statusMessage: statusMessage,
-      user: user,
-      accessToken: accessToken,
-    };
-  },
+		context.res.cookie("jid", refreshToken, {
+			httpOnly: true,
+			domain: "artflex.co",
+			path: "/"
+		});
+		return {
+			status: status,
+			statusMessage: statusMessage,
+			user: user,
+			accessToken: accessToken
+		};
+	}
 };
 
 // Our server
@@ -128,11 +129,11 @@ const port = process.env.PORT || 8080;
 
 // Configure the S3 Client
 app.locals.s3_client = new S3Client({
-  region:"us-east-1",
-  credentials: {
-    accessKeyId: process.env.S3_ACCESS_KEY_ID,
-    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
-  },
+	region: "us-east-1",
+	credentials: {
+		accessKeyId: process.env.S3_ACCESS_KEY_ID,
+		secretAccessKey: process.env.S3_SECRET_ACCESS_KEY
+	}
 });
 
 app.use(express.json());
@@ -143,8 +144,8 @@ app.use("/logout", checkCredentials, logout);
 app.use("/account", checkCredentials, account);
 app.use("/refresh_session", refresh_session);
 app.get("/test", async (req, res) => {
-  res.send("fine");
+	res.send("fine");
 });
 app.listen(port, () => {
-  console.log(`Server is listening at ${port}`);
+	console.log(`Server is listening at ${port}`);
 });

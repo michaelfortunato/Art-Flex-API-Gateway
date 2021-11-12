@@ -1,7 +1,7 @@
 const express = require("express");
 const axios = require("axios");
 const nodemailer = require("nodemailer");
-const emailHtml = require("./src/email_template.js/index.js");
+const emailHtml = require("./email_template.js");
 const router = express.Router();
 const AUTH_HOST = process.env.AUTH_APP_SERVICE_SERVICE_HOST || "localhost";
 const AUTH_PORT = process.env.AUTH_APP_SERVICE_SERVICE_PORT || 8081;

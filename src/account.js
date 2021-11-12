@@ -10,7 +10,7 @@ const {
 	UploadPartCommand,
 	CompleteMultipartUploadCommand
 } = require("@aws-sdk/client-s3");
-const { route } = require("../signup");
+const { route } = require("./signup");
 const ACCOUNT_HOST =
 	process.env.ACCOUNT_APP_SERVICE_SERVICE_HOST || "localhost";
 const ACCOUNT_PORT = process.env.ACCOUNT_APP_SERVICE_SERVICE_PORT || 8082;
