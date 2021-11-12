@@ -6,8 +6,7 @@
 	"scripts": {
 		"dev": "NODE_ENV=development ts-node-dev --respawn -- src/index.js",
 		"build": "tsc",
-		"start": "NODE_ENV=production npm run build && node ./dist/index.js",
-		"commit": "commit-wizard"
+		"start": "NODE_ENV=production npm run build && node ./dist/index.js"
 	},
 	"dependencies": {
 		"@aws-sdk/client-s3": "^3.37.0",
@@ -54,8 +53,5 @@
 		"prettier": "^2.4.1",
 		"ts-node": "^10.4.0",
 		"ts-node-dev": "^1.1.8"
-	},
-	"release": {
-		"analyzeCommits": "simple-commit-message"
 	}
 }
